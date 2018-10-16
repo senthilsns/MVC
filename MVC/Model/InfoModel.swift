@@ -8,10 +8,14 @@
 
 import UIKit
 
-struct InfoModel {
+class InfoModel: Codable {
     
-    let name: String
-    let company: String
-
+    var name : String?
+    var company : String?
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case company
+    }
 }
 

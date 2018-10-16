@@ -12,6 +12,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet var tableView: UITableView!
     
+    // Array of Person Model class
+    var arrayOfList : [InfoModel] = []{
+        // Reload data when data set
+        didSet{
+            tableView.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,28 +28,25 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
    readJsonFileFromSandbox()
         
     }
-
     
     //MARK: Read Json
     func readJsonFileFromSandbox(){
-
+        
         if let filePath = Bundle.main.path(forResource: "Info", ofType: "json"), let data = NSData(contentsOfFile: filePath) {
-
+            
             do {
-                let json = try JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions.allowFragments)
-                
-               print(json)
-            }
-            catch {
+                let decoder = JSONDecoder()
+                self.arrayOfList = try decoder.decode([InfoModel].self, from: data as Data)
+            }catch {
                 //Handle error
             }
         }
     }
-    
+
     //MARK:UITableView DataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 10
+        return arrayOfList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -51,9 +56,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "InfoCell") as? InfoCell
         }
         
-        let model = InfoModel.init(name: "senthil", company: "Oottru")
-        cell?.nameLabel.text = model.name
-        cell?.CompanyLabel.text = model.company
+        let listObj = arrayOfList[indexPath.row]
+        cell?.nameLabel.text = listObj.name
+        cell?.CompanyLabel.text = listObj.company
         
         return cell!
     }
