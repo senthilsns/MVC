@@ -4,10 +4,11 @@ Architectural Patterns
 
 
 Language : Swift 4.2
+
 Platform : Xcode 10
 
 
-MVC
+MVC (Model-View-Controller)
 
 1. Model is responsible for maintaining application data and business logic.
 
